@@ -1,0 +1,28 @@
+### Teste do endpoint GET para listar livros
+GET http://localhost:3000/livros
+Content-Type: application/json
+
+
+### Teste do endpoint POST para cadastrar um novo livro
+POST http://localhost:3000/livros
+Content-Type: application/json
+
+{
+  "id": 1,
+  "titulo": "Dom Quixote",
+  "autor": "Miguel de Cervantes",
+  "anoPublicacao": 1605,
+  "genero": "Romance",
+  "sinopse": "A história de um cavaleiro andante que perde o juízo e sai em busca de aventuras."
+}
+
+### Teste com dados incompletos para verificar validação
+POST http://localhost:3000/livros
+Content-Type: application/json
+
+{
+  "id": 2,
+  "titulo": "O Pequeno Príncipe",
+  "autor": "Antoine de Saint-Exupéry"
+  // Faltam os campos: anoPublicacao, genero e sinopse
+}
