@@ -26,3 +26,15 @@ Content-Type: application/json
   "autor": "Antoine de Saint-Exupéry"
   // Faltam os campos: anoPublicacao, genero e sinopse
 }
+
+### Tesde de atualização pelo id
+PUT http://localhost:3000/livros/1
+Content-Type: application/json
+
+{
+  "titulo": "SR Dom Quixote",
+  "autor": "SR Miguel de Cervantes",
+  "anoPublicacao": 2605,
+  "genero": "SR Romance",
+  "sinopse": "SR A história de um cavaleiro andante que perde o juízo e sai em busca de aventuras."
+}
