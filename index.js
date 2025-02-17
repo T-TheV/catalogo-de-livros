@@ -29,7 +29,33 @@ app.get('/livros', (req, res) => {
   res.status(200).json(livros);
   } 
   catch (error) {
-  res.status(500).json({msg: "Erro ao buscar livros!"})
+  res.status(500).json(
+    {
+      msg: "Erro ao buscar livros!",
+      erro: error.message
+  })
+  }
+
+});
+
+//pelo id:
+app.get('/livros/:id', (req, res) => {
+  try {
+    const id = req.params.id;
+    const livro = livros.find(elemento => elemento.id === parseInt(id))
+    
+    if(!livro){
+      return res.status(404).json({msg:"Livro não encontrado!"})
+    }
+    
+  res.status(200).json(livro);
+  } 
+  catch (error) {
+  res.status(500).json(
+    {
+      msg: "Erro ao buscar livro!",
+      erro: error.message
+  })
   }
 
 });
@@ -50,47 +76,68 @@ app.post('/livros', (req, res) => {
       error: 'Dados incompletos! Os campos id, titulo, autor, anoPublicacao, genero e sinopse são obrigatórios.'
     });
   }
-
-  // Cria o objeto livro
   const novoLivro = { id, titulo, autor, anoPublicacao, genero, sinopse };
-
-  // Adiciona o livro ao array
   livros.push(novoLivro);
-
-  // Retorna o livro cadastrado com status 201 (Created)
   return res.status(201).json(novoLivro);
 }
 catch(error){
   res.status(500).json
-({error: "Erro ao cadastrar produtos!"})}
+({error: "Erro ao cadastrar livros!"})}
 });
 
 
 // Rota para editar o livro
 // http://localhost:3000/livros/1
-app.put('/livros:id', (req,res) =>{
+// Rota para editar o livro
+app.put('/livros/:id', (req, res) => {
   try {
-    const id  = req.params.id
-    const livros = livros.find(elemento => elemento.id === id)
-    if(!livros){
-      return res.status(404).json({error: "Livro não encontrado!"})
-    }
-    const { novoTitulo, novoAutor, novoAnoPublicacao, novoGenero, novaSinopse} = req.body;
-    if(livros){
-      livros.titulo = novoTitulo;
-      livros.autor = novoAutor;
-      livros.anoPublicacao = novoAnoPublicacao;
-      livros.genero = novoGenero;
-      livros.sinopse = novaSinopse;
-      return livros
-    }
-    
-    res.status(200).json(livros)
-} catch (error) {
-  return res.status(404).json({error: "Erro ao atualizar livros!"})
+    // Pegando o id da rota
+    const id = req.params.id;
+    const { novoTitulo, novoAutor, novoAnoPublicacao, novoGenero, novaSinopse } = req.body;
 
-}
+    // Busca o livro com o id fornecido
+    const livro = livros.find(elemento => elemento.id === parseInt(id)); // Usando parseInt(id) para garantir que seja tratado como número
+
+    // Se o livro não for encontrado
+    if (!id){
+      return res.status(404).json({error: "Informe um parâmetro"})
+    }
+    if (!livro) {
+      return res.status(404).json({ error: "Livro não encontrado!" });
+    }
+    if (livro) {
+          // Atualiza os dados do livro
+    livro.titulo = novoTitulo || livro.titulo;
+    livro.autor = novoAutor || livro.autor;
+    livro.anoPublicacao = novoAnoPublicacao || livro.anoPublicacao;
+    livro.genero = novoGenero || livro.genero;
+    livro.sinopse = novaSinopse || livro.sinopse;
+    
+      // Retorna o livro atualizado
+      return res.status(200).json({msg: 'Livro atualizado com sucesso!'});
+      
+    }
+
+  } catch (error) {
+    return res.status(500).json({ error: "Erro ao atualizar livro!" });
+  }
 });
+
+app.delete("/produtos/:id", (req,res) => {
+  try {
+  const id = req.params.id;
+  const livro = livros.findIndex(elemento => elemento.id === parseInt(id))
+  if(produto === -1){
+    livros.splice(index, 1)
+    return res.status(404).json({msg: "Produto não encontrado!"})
+  }} 
+  catch (error) {
+    res.status(500).json({msg:"Erro ao deletar o parametro do banco de dados!"})
+  }
+})
+  
+
+
 
 
 // Inicia o servidor

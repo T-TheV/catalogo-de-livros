@@ -16,6 +16,11 @@ Content-Type: application/json
   "sinopse": "A história de um cavaleiro andante que perde o juízo e sai em busca de aventuras."
 }
 
+### Pegar produto pelo id
+GET  http://localhost:3000/livros/1
+Content-Type: application/json
+
+
 ### Teste com dados incompletos para verificar validação
 POST http://localhost:3000/livros
 Content-Type: application/json
@@ -32,9 +37,9 @@ PUT http://localhost:3000/livros/1
 Content-Type: application/json
 
 {
-  "titulo": "SR Dom Quixote",
-  "autor": "SR Miguel de Cervantes",
-  "anoPublicacao": 2605,
-  "genero": "SR Romance",
-  "sinopse": "SR A história de um cavaleiro andante que perde o juízo e sai em busca de aventuras."
+  "titulo": "Sapo Pula",
+  "autor": "Sapo Heroi",
+  "anoPublicacao": 2025,
+  "genero": "Romance",
+  "sinopse": "texto."
 }
