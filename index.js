@@ -23,17 +23,17 @@ const livros = [];
 */
 app.get('/livros', (req, res) => {
   try {
-    if(livros.length === 0){
-      return res.status(200).json({msg: "Não há livros a serem exibidos!"})
-}
-  res.status(200).json(livros);
-  } 
+    if (livros.length === 0) {
+      return res.status(200).json({ msg: "Não há livros a serem exibidos!" })
+    }
+    res.status(200).json(livros);
+  }
   catch (error) {
-  res.status(500).json(
-    {
-      msg: "Erro ao buscar livros!",
-      erro: error.message
-  })
+    res.status(500).json(
+      {
+        msg: "Erro ao buscar livros!",
+        erro: error.message
+      })
   }
 
 });
@@ -42,20 +42,20 @@ app.get('/livros', (req, res) => {
 app.get('/livros/:id', (req, res) => {
   try {
     const id = req.params.id;
-    const livro = livros.find(elemento => elemento.id === parseInt(id))
-    
-    if(!livro){
-      return res.status(404).json({msg:"Livro não encontrado!"})
+    const livro = livros.find(elemento => elemento.id === id)
+
+    if (!livro) {
+      return res.status(404).json({ msg: "Livro não encontrado!" })
     }
-    
-  res.status(200).json(livro);
-  } 
+
+    res.status(200).json(livro);
+  }
   catch (error) {
-  res.status(500).json(
-    {
-      msg: "Erro ao buscar livro!",
-      erro: error.message
-  })
+    res.status(500).json(
+      {
+        msg: "Erro ao buscar livro!",
+        erro: error.message
+      })
   }
 
 });
@@ -67,22 +67,23 @@ app.get('/livros/:id', (req, res) => {
 */
 app.post('/livros', (req, res) => {
   // Extrai os dados do corpo da requisição
-  try{
-  const { id, titulo, autor, anoPublicacao, genero, sinopse } = req.body;
+  try {
+    const { id, titulo, autor, anoPublicacao, genero, sinopse } = req.body;
 
-  // Validação para verificar se todos os campos obrigatórios foram enviados
-  if (!id || !titulo || !autor || !anoPublicacao || !genero || !sinopse) {
-    return res.status(400).json({
-      error: 'Dados incompletos! Os campos id, titulo, autor, anoPublicacao, genero e sinopse são obrigatórios.'
-    });
+    // Validação para verificar se todos os campos obrigatórios foram enviados
+    if (!id || !titulo || !autor || !anoPublicacao || !genero || !sinopse) {
+      return res.status(400).json({
+        error: 'Dados incompletos! Os campos id, titulo, autor, anoPublicacao, genero e sinopse são obrigatórios.'
+      });
+    }
+    const novoLivro = { id, titulo, autor, anoPublicacao, genero, sinopse };
+    livros.push(novoLivro);
+    return res.status(201).json(novoLivro);
   }
-  const novoLivro = { id, titulo, autor, anoPublicacao, genero, sinopse };
-  livros.push(novoLivro);
-  return res.status(201).json(novoLivro);
-}
-catch(error){
-  res.status(500).json
-({error: "Erro ao cadastrar livros!"})}
+  catch (error) {
+    res.status(500).json
+      ({ error: "Erro ao cadastrar livros!" })
+  }
 });
 
 
@@ -96,26 +97,26 @@ app.put('/livros/:id', (req, res) => {
     const { novoTitulo, novoAutor, novoAnoPublicacao, novoGenero, novaSinopse } = req.body;
 
     // Busca o livro com o id fornecido
-    const livro = livros.find(elemento => elemento.id === parseInt(id)); // Usando parseInt(id) para garantir que seja tratado como número
+    const livro = livros.find(elemento => elemento.id === id); // Usando parseIntid para garantir que seja tratado como número
 
     // Se o livro não for encontrado
-    if (!id){
-      return res.status(404).json({error: "Informe um parâmetro"})
+    if (!id) {
+      return res.status(404).json({ error: "Informe um parâmetro" })
     }
     if (!livro) {
       return res.status(404).json({ error: "Livro não encontrado!" });
     }
     if (livro) {
-          // Atualiza os dados do livro
-    livro.titulo = novoTitulo || livro.titulo;
-    livro.autor = novoAutor || livro.autor;
-    livro.anoPublicacao = novoAnoPublicacao || livro.anoPublicacao;
-    livro.genero = novoGenero || livro.genero;
-    livro.sinopse = novaSinopse || livro.sinopse;
-    
+      // Atualiza os dados do livro
+      livro.titulo = novoTitulo || livro.titulo;
+      livro.autor = novoAutor || livro.autor;
+      livro.anoPublicacao = novoAnoPublicacao || livro.anoPublicacao;
+      livro.genero = novoGenero || livro.genero;
+      livro.sinopse = novaSinopse || livro.sinopse;
+
       // Retorna o livro atualizado
-      return res.status(200).json({msg: 'Livro atualizado com sucesso!'});
-      
+      return res.status(200).json({ msg: 'Livro atualizado com sucesso!' });
+
     }
 
   } catch (error) {
@@ -123,19 +124,33 @@ app.put('/livros/:id', (req, res) => {
   }
 });
 
-app.delete("/produtos/:id", (req,res) => {
+app.delete("/livros", (req, res) => {
   try {
-  const id = req.params.id;
-  const livro = livros.findIndex(elemento => elemento.id === parseInt(id))
-  if(produto === -1){
-    livros.splice(index, 1)
-    return res.status(404).json({msg: "Produto não encontrado!"})
-  }} 
-  catch (error) {
-    res.status(500).json({msg:"Erro ao deletar o parametro do banco de dados!"})
+    livros.length = 0;
+    res.status(200).json({ mensagem: 'Tudo deletado!' })
+  } catch (error) {
+    res.status(500).json({ msg: "Erro ao deletar tudo!" })
   }
 })
-  
+
+app.delete("/livros/:id", (req, res) => {
+  try {
+    const id = req.params.id;
+    const index = livros.findIndex(elemento => elemento.id === id)
+    if (index === -1) {
+      return res.status(404).json({ msg: "Livro não encontrado!" })
+    }
+    livros.splice(index, 1)
+    res.status(200).json({ mensagem: "Livro deletado com sucesso!" })
+  }
+  catch (error) {
+    res.status(500).json(
+      { msg: "Erro ao deletar o parametro do banco de dados!" ,
+        erro: error.message}
+      )
+  }
+})
+
 
 
 

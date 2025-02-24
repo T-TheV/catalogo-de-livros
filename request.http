@@ -8,7 +8,7 @@ POST http://localhost:3000/livros
 Content-Type: application/json
 
 {
-  "id": 1,
+  "id": "1",
   "titulo": "Dom Quixote",
   "autor": "Miguel de Cervantes",
   "anoPublicacao": 1605,
@@ -26,7 +26,7 @@ POST http://localhost:3000/livros
 Content-Type: application/json
 
 {
-  "id": 2,
+  "id": "2",
   "titulo": "O Pequeno Príncipe",
   "autor": "Antoine de Saint-Exupéry"
   // Faltam os campos: anoPublicacao, genero e sinopse
@@ -37,9 +37,17 @@ PUT http://localhost:3000/livros/1
 Content-Type: application/json
 
 {
-  "titulo": "Sapo Pula",
-  "autor": "Sapo Heroi",
-  "anoPublicacao": 2025,
-  "genero": "Romance",
-  "sinopse": "texto."
+  "novoTitulo": "Sapo Pula",
+  "novoAutor": "Sapo Heroi",
+  "novoAnoPublicacao": 2025,
+  "novoGenero": "Romance",
+  "novaSinopse": "texto."
 }
+
+### Deletar por id
+DELETE http://localhost:3000/livros/1
+Content-Type: application/json
+
+### Deletar todos
+DELETE http://localhost:3000/livros
+Content-Type: application/json
